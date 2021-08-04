@@ -75,11 +75,9 @@ species   <- species[apply(species == 0, 1, sum) <= (ncol(species) * 0.90), ]   
 ####
 ####Calculate Aitchison distance and prepare for PCA
 ####
-conds       <- c(rep("A", ncol(species)-10 ), rep("B", 10)) #If you have less than 12 animals, adjust!
-species.clr <- aldex.clr(species, conds, mc.samples = 1000, denom="all", verbose=TRUE, useMC=TRUE) 
-species.eff <- aldex.effect(species.clr, verbose = TRUE, include.sample.summary = TRUE)
+species.clr <- aldex.clr(species, mc.samples = 1000, denom="all", verbose=TRUE, useMC=TRUE) 
 
-species.exp <- (species.eff[,c(4:(ncol(species.eff)-4))]) #remove the useless t-test-like results
+species.exp <- Tjazi::get_aldex_exp(species.clr)
 
 data.a.pca  <- prcomp(t(species.exp))
 
